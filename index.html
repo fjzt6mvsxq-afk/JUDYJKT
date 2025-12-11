@@ -12,12 +12,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #fcfcf5;
+            background-color: #f8f9fa;
             -webkit-tap-highlight-color: transparent;
+        }
+        .font-serif-display {
+            font-family: 'Playfair Display', serif;
         }
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -26,443 +30,511 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        /* 增加按鈕點擊的回饋感 */
         .btn-active:active {
-            transform: scale(0.95);
-            opacity: 0.8;
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+        /* Canva 風格陰影 */
+        .canva-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
-<body class="bg-[#fafaf0] text-slate-800">
+<body class="bg-[#f0f4f8] text-slate-800">
 
 <div id="app" class="relative min-h-screen pb-24">
 
-    <!-- 1. 頁首 Header Area -->
-    <!-- 修正：高度增加到 h-72，讓內容不擁擠 -->
-    <div class="relative bg-slate-800 h-72 w-full overflow-hidden">
-        <!-- 背景圖 -->
-        <img src="https://images.unsplash.com/photo-1555899434-94d1368d7dd6?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover opacity-70" alt="Jakarta">
+    <!-- 1. 頁首 Header Area (美化版) -->
+    <!-- 修正：高度增加到 h-80，確保有足夠空間 -->
+    <div class="relative bg-teal-900 h-80 w-full overflow-hidden rounded-b-[40px] shadow-2xl z-0">
+        <!-- 背景圖：更具印尼風情 -->
+        <img src="https://images.unsplash.com/photo-1570533136641-6e3e551383de?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover opacity-60" alt="Indonesia Resort">
         
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-900/30 via-transparent to-slate-900/90"></div>
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-teal-900/40 via-teal-900/20 to-teal-900/90"></div>
         
         <!-- 標題文字 -->
-        <div class="absolute top-16 left-6 text-white">
-            <h1 class="text-3xl font-bold shadow-black drop-shadow-md">Jakarta Trip 🇮🇩</h1>
-            <p class="text-base opacity-95 font-medium mt-1">Oscar & Judy's Adventure</p>
-            <div class="inline-block bg-yellow-500/90 text-black px-2 py-0.5 rounded text-xs font-bold mt-2 shadow-sm">
-                Dec 12 - Dec 15, 2025
+        <div class="absolute top-12 left-6 right-6 text-white z-10">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-4xl font-serif-display font-bold tracking-wide drop-shadow-lg">Jakarta <span class="text-yellow-400">Trip</span></h1>
+                    <p class="text-sm opacity-90 font-medium mt-1 tracking-widest uppercase">Oscar & Judy's Adventure</p>
+                </div>
+                <!-- 裝飾性國旗 -->
+                <div class="bg-white/10 p-2 rounded-xl backdrop-blur-sm border border-white/20">
+                    <span class="text-2xl">🇮🇩</span>
+                </div>
+            </div>
+            
+            <div class="mt-4 inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                <i class="fa-regular fa-calendar text-yellow-400 text-xs"></i>
+                <span class="text-xs font-bold text-white">Dec 12 - Dec 15, 2025</span>
             </div>
         </div>
 
-        <!-- 分頁 Tabs -->
-        <!-- 修正：bottom-14 提高位置，避免被下方圓弧遮擋 -->
-        <div class="absolute bottom-14 right-4 flex space-x-5 z-20">
-            <button @click="currentTab = 'itinerary'" :class="currentTab === 'itinerary' ? 'text-yellow-400 scale-110' : 'text-white/70 hover:text-white'" class="flex flex-col items-center transition duration-200">
-                <i class="fa-solid fa-map-location-dot text-2xl mb-1 drop-shadow-md"></i>
-                <span class="text-[11px] font-bold shadow-black drop-shadow-sm">行程</span>
-            </button>
-            <button @click="currentTab = 'info'" :class="currentTab === 'info' ? 'text-yellow-400 scale-110' : 'text-white/70 hover:text-white'" class="flex flex-col items-center transition duration-200">
-                <i class="fa-solid fa-circle-info text-2xl mb-1 drop-shadow-md"></i>
-                <span class="text-[11px] font-bold shadow-black drop-shadow-sm">資訊</span>
-            </button>
-            <button @click="currentTab = 'shopping'" :class="currentTab === 'shopping' ? 'text-yellow-400 scale-110' : 'text-white/70 hover:text-white'" class="flex flex-col items-center transition duration-200">
-                <i class="fa-solid fa-basket-shopping text-2xl mb-1 drop-shadow-md"></i>
-                <span class="text-[11px] font-bold shadow-black drop-shadow-sm">清單</span>
-            </button>
-            <button @click="currentTab = 'expense'" :class="currentTab === 'expense' ? 'text-yellow-400 scale-110' : 'text-white/70 hover:text-white'" class="flex flex-col items-center transition duration-200">
-                <i class="fa-solid fa-coins text-2xl mb-1 drop-shadow-md"></i>
-                <span class="text-[11px] font-bold shadow-black drop-shadow-sm">花費</span>
-            </button>
+        <!-- 修正綠色圈重疊：Tabs 上移並獨立顯示 -->
+        <div class="absolute bottom-20 left-6 right-6 z-20">
+            <div class="glass-effect rounded-2xl p-2 flex justify-around items-center shadow-lg">
+                <button @click="currentTab = 'itinerary'" :class="currentTab === 'itinerary' ? 'text-yellow-400 bg-white/10' : 'text-white/70'" class="flex-1 py-2 rounded-xl flex flex-col items-center transition duration-300">
+                    <i class="fa-solid fa-map-location-dot text-xl mb-1"></i>
+                    <span class="text-[10px] font-bold">行程</span>
+                </button>
+                <button @click="currentTab = 'info'" :class="currentTab === 'info' ? 'text-yellow-400 bg-white/10' : 'text-white/70'" class="flex-1 py-2 rounded-xl flex flex-col items-center transition duration-300">
+                    <i class="fa-solid fa-circle-info text-xl mb-1"></i>
+                    <span class="text-[10px] font-bold">資訊</span>
+                </button>
+                <button @click="currentTab = 'shopping'" :class="currentTab === 'shopping' ? 'text-yellow-400 bg-white/10' : 'text-white/70'" class="flex-1 py-2 rounded-xl flex flex-col items-center transition duration-300">
+                    <i class="fa-solid fa-basket-shopping text-xl mb-1"></i>
+                    <span class="text-[10px] font-bold">清單</span>
+                </button>
+                <button @click="currentTab = 'expense'" :class="currentTab === 'expense' ? 'text-yellow-400 bg-white/10' : 'text-white/70'" class="flex-1 py-2 rounded-xl flex flex-col items-center transition duration-300">
+                    <i class="fa-solid fa-coins text-xl mb-1"></i>
+                    <span class="text-[10px] font-bold">花費</span>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- 圓弧銜接設計 (負邊距) -->
-    <!-- 保持 -mt-8 創造重疊感，但上方 Tabs 已避開 -->
-    <div class="relative -mt-8 bg-[#fafaf0] rounded-t-[30px] px-4 pt-8 min-h-[calc(100vh-200px)] z-10 shadow-[0_-5px_20px_rgba(0,0,0,0.1)]">
+    <!-- 主內容區塊 (負邊距銜接) -->
+    <!-- 修正：因為 Header 變高且 Tabs 上移，這裡的負邊距可以稍微減小，讓視覺更舒適 -->
+    <div class="relative -mt-6 px-4 z-10">
 
         <!-- ===== TAB 1: 每日行程表 ===== -->
-        <div v-if="currentTab === 'itinerary'">
+        <div v-if="currentTab === 'itinerary'" class="animate-fade-in-up">
             
             <!-- 日期選擇器 -->
-            <div class="flex overflow-x-auto no-scrollbar space-x-3 mb-6 pb-2 px-1">
+            <div class="bg-white rounded-2xl p-2 shadow-lg mb-5 flex overflow-x-auto no-scrollbar space-x-2">
                 <div v-for="(day, index) in days" :key="index" 
                      @click="selectedDayIndex = index"
-                     :class="selectedDayIndex === index ? 'bg-slate-800 text-white shadow-lg scale-105 ring-2 ring-yellow-400 ring-offset-2' : 'bg-white text-slate-400 border border-gray-200'"
-                     class="flex-shrink-0 w-16 h-20 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 cursor-pointer btn-active">
-                    <span class="text-xs font-medium uppercase mb-1">{{ day.weekday }}</span>
-                    <span class="text-2xl font-bold">{{ day.date }}</span>
+                     :class="selectedDayIndex === index ? 'bg-teal-800 text-white shadow-md' : 'bg-transparent text-gray-400 hover:bg-gray-50'"
+                     class="flex-shrink-0 flex-1 min-w-[70px] h-16 rounded-xl flex flex-col items-center justify-center transition-all duration-300 cursor-pointer btn-active">
+                    <span class="text-[10px] font-bold uppercase tracking-wider">{{ day.weekday }}</span>
+                    <span class="text-xl font-bold font-serif-display">{{ day.date }}</span>
                 </div>
             </div>
 
-            <!-- 天氣 Widget -->
-            <div class="bg-gradient-to-br from-blue-500 to-blue-400 rounded-2xl p-4 text-white mb-6 flex items-center justify-between shadow-lg shadow-blue-200">
-                <div>
-                    <div class="text-sm font-medium opacity-90"><i class="fa-solid fa-location-dot mr-1"></i>Jakarta, ID</div>
-                    <div class="text-4xl font-bold mt-2">31°C</div>
-                    <div class="text-xs mt-1 bg-white/20 inline-block px-2 py-1 rounded">體感 36°C • 濕度高</div>
-                </div>
-                <div class="text-5xl opacity-90 drop-shadow-sm">
-                    <i class="fa-solid fa-cloud-sun"></i>
+            <!-- 天氣 Widget (Canva Style) -->
+            <div class="relative bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl p-5 text-white mb-6 canva-shadow overflow-hidden">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+                <div class="relative z-10 flex justify-between items-center">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest opacity-80"><i class="fa-solid fa-location-dot mr-1"></i>Jakarta</div>
+                        <div class="text-4xl font-serif-display font-bold mt-2">31°C</div>
+                        <div class="text-xs mt-2 font-medium bg-white/20 inline-block px-2 py-1 rounded-full backdrop-blur-sm">體感 36°C • 潮濕</div>
+                    </div>
+                    <div class="text-5xl drop-shadow-md">
+                        <i class="fa-solid fa-cloud-sun text-yellow-300"></i>
+                    </div>
                 </div>
             </div>
 
             <!-- 行程列表 -->
-            <div class="space-y-6">
-                <div v-for="(item, index) in filteredItinerary" :key="item.id" class="relative pl-4 border-l-[3px] border-dotted border-gray-300 last:border-0 pb-2">
+            <div class="space-y-8 pb-20">
+                <div v-for="(item, index) in filteredItinerary" :key="item.id" class="relative pl-6 border-l-2 border-dashed border-gray-300 last:border-0">
                     
-                    <!-- 交通時間 (顯示在卡片上方) -->
-                    <div v-if="index > 0 || (index === 0 && selectedDayIndex > 0)" class="absolute -left-[20px] -top-5 bg-white text-slate-500 text-[10px] px-2 py-1 rounded-full border border-gray-200 flex items-center gap-1 shadow-sm font-medium z-10">
-                        <i class="fa-solid fa-person-walking text-blue-500"></i>
-                        <span>約 {{ item.travelTime || '15' }} min</span>
+                    <!-- 裝飾性圓點 -->
+                    <div class="absolute -left-[9px] top-6 w-4 h-4 rounded-full bg-white border-4 border-teal-600 shadow-sm z-10"></div>
+
+                    <!-- 交通時間 (Pill Shape) -->
+                    <div v-if="index > 0 || (index === 0 && selectedDayIndex > 0)" class="absolute -left-[24px] -top-6 bg-white text-slate-500 text-[10px] px-3 py-1 rounded-full border border-gray-200 shadow-sm font-bold z-10 flex items-center gap-1">
+                        <i class="fa-solid fa-person-walking text-teal-600"></i>
+                        <span>{{ item.travelTime || '15 min' }}</span>
                     </div>
 
-                    <!-- 行程卡片 (移除最外層 click 事件，防止誤觸) -->
-                    <div class="bg-white p-4 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-gray-100 relative group">
-                        
-                        <!-- 類別標籤 -->
-                        <div class="flex justify-between items-start mb-2">
-                            <span :class="getCategoryColor(item.category)" class="text-[10px] font-bold px-2 py-0.5 rounded text-white shadow-sm">
+                    <!-- 行程卡片 -->
+                    <div class="bg-white p-5 rounded-2xl canva-shadow relative group overflow-hidden">
+                        <!-- 右上角裝飾 (Categories) -->
+                        <div class="absolute top-0 right-0 p-3">
+                            <span :class="getCategoryColor(item.category)" class="text-[10px] font-bold px-2 py-1 rounded-lg text-white shadow-sm uppercase tracking-wide">
                                 {{ item.category }}
                             </span>
-                            
-                            <!-- 修正：獨立的導航按鈕 (防止誤觸) -->
-                            <button @click.stop="openMap(item.name)" class="btn-active bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-blue-100 hover:bg-blue-100 transition">
-                                <i class="fa-solid fa-location-arrow"></i>
-                                導航
-                            </button>
                         </div>
 
-                        <div class="flex items-start gap-3">
+                        <div class="flex items-start gap-4 mt-2">
                             <!-- 圖示 -->
-                            <div class="mt-1 text-slate-400 w-8 flex justify-center">
-                                <i :class="getCategoryIcon(item.category)" class="text-xl"></i>
+                            <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-teal-700 shadow-inner flex-shrink-0">
+                                <i :class="getCategoryIcon(item.category)" class="text-lg"></i>
                             </div>
                             
                             <!-- 內容 -->
-                            <div class="flex-1">
-                                <h3 class="font-bold text-lg text-slate-800 leading-tight">{{ item.name }}</h3>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-bold text-lg text-slate-800 leading-snug pr-12">{{ item.name }}</h3>
                                 
-                                <div class="flex flex-wrap items-center gap-2 mt-2">
-                                    <span v-if="item.time" class="bg-gray-100 px-2 py-0.5 rounded text-xs text-slate-600 font-mono font-medium">
+                                <div class="flex flex-wrap items-center gap-3 mt-2">
+                                    <span v-if="item.time" class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded">
                                         <i class="fa-regular fa-clock mr-1"></i>{{ item.time }}
-                                    </span>
-                                    <span v-if="item.duration" class="text-xs text-gray-400">
-                                        <i class="fa-solid fa-hourglass-half mr-1"></i>{{ item.duration }}
                                     </span>
                                 </div>
 
-                                <!-- 修正：字體放大 (text-sm)，加深顏色，增加行高 -->
-                                <div v-if="item.notes" class="mt-3 p-3 bg-[#fffbe6] rounded-lg border border-yellow-100">
-                                    <p class="text-sm font-medium text-slate-700 leading-relaxed">
+                                <!-- 修正紅色圈：放大字體、增加背景對比 -->
+                                <div v-if="item.notes" class="mt-4 p-3 bg-yellow-50 rounded-xl border border-yellow-100 relative">
+                                    <div class="absolute left-0 top-3 bottom-3 w-1 bg-yellow-400 rounded-r-full"></div>
+                                    <p class="text-base font-medium text-slate-800 pl-2 leading-relaxed">
                                         {{ item.notes }}
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- 排序/刪除 控制項 -->
-                        <div class="flex justify-end mt-3 pt-2 border-t border-gray-50 gap-4">
-                            <button @click.stop="moveItem(index, -1)" class="text-gray-300 hover:text-blue-500 text-sm px-2 py-1"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button @click.stop="moveItem(index, 1)" class="text-gray-300 hover:text-blue-500 text-sm px-2 py-1"><i class="fa-solid fa-arrow-down"></i></button>
-                            <button @click.stop="deleteItineraryItem(item.id)" class="text-gray-300 hover:text-red-500 text-sm px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                        <!-- 導航按鈕 (底部全寬) -->
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                             <div class="flex gap-3">
+                                <button @click.stop="moveItem(index, -1)" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-teal-600 transition"><i class="fa-solid fa-arrow-up text-xs"></i></button>
+                                <button @click.stop="deleteItineraryItem(item.id)" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
+                            </div>
+                            <button @click.stop="openMap(item.name)" class="btn-active bg-teal-50 text-teal-700 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-teal-100 transition shadow-sm">
+                                <i class="fa-solid fa-location-arrow"></i>
+                                導航前往
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- 無行程提示 -->
-                <div v-if="filteredItinerary.length === 0" class="flex flex-col items-center justify-center py-12 text-gray-300">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                        <i class="fa-solid fa-mug-hot text-2xl"></i>
-                    </div>
-                    <p class="text-sm">今天可以睡到自然醒～</p>
+                <div v-if="filteredItinerary.length === 0" class="text-center py-16">
+                    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486747.png" class="w-24 mx-auto opacity-50 mb-4 grayscale" alt="Relax">
+                    <p class="text-slate-400 font-medium">享受片刻寧靜...</p>
                 </div>
             </div>
 
-            <!-- 新增按鈕 -->
-            <button @click="showAddModal = true" class="fixed bottom-6 right-6 bg-slate-800 text-white w-14 h-14 rounded-full shadow-2xl shadow-slate-400 flex items-center justify-center text-2xl z-50 btn-active border-2 border-white/20">
+            <!-- 新增按鈕 (懸浮) -->
+            <button @click="showAddModal = true" class="fixed bottom-8 right-6 bg-teal-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl z-50 btn-active ring-4 ring-white/50">
                 <i class="fa-solid fa-plus"></i>
             </button>
         </div>
 
 
         <!-- ===== TAB 2: 資訊 ===== -->
-        <div v-if="currentTab === 'info'" class="space-y-6 pb-20 animate-fade-in">
+        <div v-if="currentTab === 'info'" class="space-y-6 pb-24 animate-fade-in-up">
+            
             <!-- 匯率換算 -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
-                    <span class="w-1 h-5 bg-yellow-500 rounded-full"></span>
-                    匯率換算 (IDR ⇄ HKD)
+            <div class="bg-white p-6 rounded-2xl canva-shadow relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-20 h-20 bg-yellow-400/20 rounded-full blur-2xl"></div>
+                <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2">
+                    <i class="fa-solid fa-coins text-yellow-500"></i>
+                    匯率換算 <span class="text-xs font-normal text-gray-400 ml-1">(IDR ⇄ HKD)</span>
                 </h3>
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="flex-1">
-                        <label class="text-xs text-gray-400 block mb-1">印尼盾 (IDR)</label>
-                        <input type="number" v-model="calcIDR" @input="convertCurrency('IDR')" class="w-full bg-gray-50 rounded-lg p-3 font-mono font-bold text-lg outline-none focus:ring-2 focus:ring-yellow-400 text-slate-700" placeholder="0">
+                <div class="flex items-center gap-3">
+                    <div class="flex-1 bg-gray-50 p-3 rounded-xl border border-gray-100 focus-within:ring-2 focus-within:ring-teal-500 transition">
+                        <label class="text-[10px] text-gray-400 font-bold uppercase block mb-1">印尼盾 (IDR)</label>
+                        <input type="number" v-model="calcIDR" @input="convertCurrency('IDR')" class="w-full bg-transparent font-mono font-bold text-lg outline-none text-slate-800" placeholder="0">
                     </div>
-                    <i class="fa-solid fa-right-left text-gray-300 mt-5"></i>
-                    <div class="flex-1">
-                        <label class="text-xs text-gray-400 block mb-1">港幣 (HKD)</label>
-                        <input type="number" v-model="calcHKD" @input="convertCurrency('HKD')" class="w-full bg-gray-50 rounded-lg p-3 font-mono font-bold text-lg outline-none focus:ring-2 focus:ring-yellow-400 text-slate-700" placeholder="0">
+                    <i class="fa-solid fa-arrow-right-arrow-left text-gray-300"></i>
+                    <div class="flex-1 bg-gray-50 p-3 rounded-xl border border-gray-100 focus-within:ring-2 focus-within:ring-teal-500 transition">
+                        <label class="text-[10px] text-gray-400 font-bold uppercase block mb-1">港幣 (HKD)</label>
+                        <input type="number" v-model="calcHKD" @input="convertCurrency('HKD')" class="w-full bg-transparent font-mono font-bold text-lg outline-none text-slate-800" placeholder="0">
                     </div>
                 </div>
-                <p class="text-[10px] text-gray-400 text-center bg-gray-50 py-1 rounded">參考匯率: 1 HKD ≈ 2,050 IDR</p>
             </div>
 
-            <!-- 航班資訊 -->
-            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-                <div class="bg-slate-800 text-white p-3 px-5 flex justify-between items-center">
-                    <span class="font-bold"><i class="fa-solid fa-plane-departure mr-2"></i>去程航班</span>
-                    <span class="text-xs font-mono bg-white/20 px-2 py-1 rounded">12 Dec</span>
+            <!-- 去程航班 -->
+            <div class="bg-white rounded-2xl canva-shadow overflow-hidden group">
+                <div class="bg-slate-800 text-white p-4 flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    <span class="font-bold z-10"><i class="fa-solid fa-plane-departure mr-2 text-yellow-400"></i>去程航班</span>
+                    <span class="text-xs font-mono bg-white/10 px-2 py-1 rounded backdrop-blur-md z-10">12 Dec</span>
                 </div>
-                <div class="p-5">
-                    <div class="flex justify-between items-center mb-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-slate-800">HKG</div>
-                            <div class="text-xs text-gray-500">香港</div>
+                            <div class="text-4xl font-serif-display font-bold text-slate-800">HKG</div>
+                            <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Hong Kong</div>
                         </div>
                         <div class="flex flex-col items-center px-4 w-full">
-                            <div class="text-xs text-gray-400 mb-1">03h 55m</div>
-                            <div class="w-full h-[2px] bg-gray-200 relative">
-                                <i class="fa-solid fa-plane absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-slate-300 bg-white px-2"></i>
+                            <div class="text-[10px] text-gray-400 mb-1 font-bold">03H 55M</div>
+                            <div class="w-full h-[1px] bg-gray-300 relative">
+                                <i class="fa-solid fa-plane absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-slate-300 bg-white px-2 text-sm"></i>
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-slate-800">CGK</div>
-                            <div class="text-xs text-gray-500">雅加達</div>
+                            <div class="text-4xl font-serif-display font-bold text-slate-800">CGK</div>
+                            <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Jakarta</div>
                         </div>
                     </div>
-                    <div class="flex justify-between text-base font-bold text-slate-700 mb-4">
+                    <div class="flex justify-between text-lg font-bold text-slate-700 mb-4 px-2">
                         <span>19:05</span>
                         <span>23:00</span>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded-lg flex items-center justify-center gap-2 text-sm text-slate-600">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Cathay_Pacific_logo.svg/1200px-Cathay_Pacific_logo.svg.png" class="h-4 opacity-70">
-                        <span class="font-bold">CX 797</span> (國泰航空)
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-center gap-3 text-sm text-slate-600">
+                        <span class="font-bold text-teal-700">CX 797</span>
+                        <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                        <span>國泰航空</span>
                     </div>
                 </div>
             </div>
 
-            <!-- 住宿資訊 -->
-            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-                <div class="bg-indigo-600 text-white p-3 px-5">
-                    <span class="font-bold"><i class="fa-solid fa-hotel mr-2"></i>住宿飯店</span>
+             <!-- 回程航班 -->
+             <div class="bg-white rounded-2xl canva-shadow overflow-hidden group">
+                <div class="bg-slate-700 text-white p-4 flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    <span class="font-bold z-10"><i class="fa-solid fa-plane-arrival mr-2 text-yellow-400"></i>回程航班</span>
+                    <span class="text-xs font-mono bg-white/10 px-2 py-1 rounded backdrop-blur-md z-10">15 Dec</span>
                 </div>
-                <div class="p-5">
-                    <h3 class="font-bold text-lg text-slate-800">Pullman Jakarta Thamrin</h3>
-                    <p class="text-sm text-gray-500 mt-2 leading-relaxed"><i class="fa-solid fa-map-pin mr-1 text-red-400"></i> Jl. M.H. Thamrin No.59, Jakarta</p>
-                    <div class="mt-4 flex gap-3">
-                        <button @click="openMap('Pullman Jakarta Thamrin')" class="flex-1 bg-indigo-50 text-indigo-700 py-2.5 rounded-lg text-sm font-bold hover:bg-indigo-100 transition flex items-center justify-center gap-2 btn-active">
-                            <i class="fa-solid fa-location-arrow"></i> 導航
-                        </button>
-                        <a href="tel:+622131921111" class="flex-1 bg-gray-100 text-slate-700 py-2.5 rounded-lg text-sm font-bold hover:bg-gray-200 text-center flex items-center justify-center gap-2 btn-active">
-                            <i class="fa-solid fa-phone"></i> 撥打
-                        </a>
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-serif-display font-bold text-slate-800">CGK</div>
+                            <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Jakarta</div>
+                        </div>
+                        <div class="flex flex-col items-center px-4 w-full">
+                             <div class="text-[10px] text-gray-400 mb-1 font-bold">04H 55M</div>
+                            <div class="w-full h-[1px] bg-gray-300 relative">
+                                <i class="fa-solid fa-plane absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 rotate-180 text-slate-300 bg-white px-2 text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-serif-display font-bold text-slate-800">HKG</div>
+                            <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Hong Kong</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-lg font-bold text-slate-700 mb-4 px-2">
+                        <span>14:30</span>
+                        <span>20:25</span>
+                    </div>
+                     <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-center gap-3 text-sm text-slate-600">
+                        <span class="font-bold text-teal-700">CX 776</span>
+                        <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                        <span>國泰航空</span>
                     </div>
                 </div>
             </div>
 
-            <!-- 租車/緊急 -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 text-green-600">
-                        <i class="fa-solid fa-car text-lg"></i>
+            <!-- 住宿 -->
+            <div class="bg-white rounded-2xl canva-shadow overflow-hidden">
+                <div class="relative h-32">
+                    <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/49733446.jpg?k=23075c397195c807204983050073010363234988755694723149495116743916&o=&hp=1" class="w-full h-full object-cover" alt="Hotel">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="font-bold text-lg font-serif-display">Pullman Jakarta Thamrin</h3>
+                        <div class="flex text-yellow-400 text-xs mt-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
                     </div>
-                    <h4 class="font-bold text-sm text-slate-700">租車資訊</h4>
-                    <p class="text-xs text-gray-400 mt-1">尚未設定</p>
                 </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2 text-red-600">
-                        <i class="fa-solid fa-truck-medical text-lg"></i>
+                <div class="p-4">
+                    <p class="text-sm text-gray-600 mb-4 flex items-start gap-2">
+                        <i class="fa-solid fa-map-pin text-red-500 mt-1"></i>
+                        Jl. M.H. Thamrin No.59, Jakarta
+                    </p>
+                    <div class="flex gap-3">
+                        <button @click="openMap('Pullman Jakarta Thamrin')" class="flex-1 bg-teal-50 text-teal-800 py-3 rounded-xl text-sm font-bold shadow-sm hover:bg-teal-100 transition">導航</button>
+                        <a href="tel:+622131921111" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl text-sm font-bold shadow-sm hover:bg-gray-200 text-center">撥打電話</a>
                     </div>
-                    <h4 class="font-bold text-sm text-slate-700">緊急求助</h4>
-                    <a href="tel:112" class="text-xs text-red-500 font-bold mt-1 block bg-red-50 py-1 rounded">撥打 112</a>
                 </div>
+            </div>
+            
+            <!-- 緊急 -->
+             <div class="bg-red-50 p-4 rounded-xl border border-red-100 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-600">
+                         <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-800 text-sm">緊急求助</div>
+                        <div class="text-xs text-gray-500">當局電話</div>
+                    </div>
+                </div>
+                <a href="tel:112" class="bg-white text-red-600 px-4 py-2 rounded-lg text-sm font-bold shadow-sm border border-red-100">撥打 112</a>
             </div>
         </div>
 
 
         <!-- ===== TAB 3: 購物清單 ===== -->
-        <div v-if="currentTab === 'shopping'" class="pb-20">
-            <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2 pl-2">
-                <span class="w-1 h-5 bg-yellow-500 rounded-full"></span>
-                購物清單
-            </h3>
+        <div v-if="currentTab === 'shopping'" class="pb-24 animate-fade-in-up">
+            <h3 class="font-bold text-2xl text-slate-800 mb-6 font-serif-display pl-2">Shopping List</h3>
             
             <div class="grid grid-cols-2 gap-4">
-                <div v-for="(item, index) in shoppingList" :key="index" class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col relative group">
-                    <button @click="deleteShoppingItem(index)" class="absolute top-2 right-2 w-6 h-6 bg-white/80 rounded-full shadow flex items-center justify-center text-gray-400 hover:text-red-500 z-10">
+                <div v-for="(item, index) in shoppingList" :key="index" class="bg-white p-3 rounded-2xl canva-shadow relative group">
+                    <button @click="deleteShoppingItem(index)" class="absolute top-2 right-2 w-7 h-7 bg-white/90 backdrop-blur rounded-full shadow flex items-center justify-center text-gray-400 hover:text-red-500 z-10 transition">
                         <i class="fa-solid fa-xmark text-xs"></i>
                     </button>
-                    <div class="aspect-square bg-gray-50 rounded-lg mb-2 overflow-hidden flex items-center justify-center text-gray-300 relative">
-                        <img v-if="item.image" :src="item.image" class="w-full h-full object-cover">
-                        <i v-else class="fa-solid fa-image text-3xl opacity-20"></i>
+                    <div class="aspect-square bg-gray-50 rounded-xl mb-3 overflow-hidden flex items-center justify-center relative">
+                        <img v-if="item.image" :src="item.image" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        <div v-else class="text-center text-gray-300">
+                            <i class="fa-solid fa-image text-3xl mb-1"></i>
+                            <div class="text-[10px]">No Image</div>
+                        </div>
                     </div>
-                    <div class="font-bold text-sm truncate text-slate-800">{{ item.name }}</div>
-                    <div class="text-xs text-gray-400 mt-1 flex items-center gap-1">
-                        <i class="fa-solid fa-shop text-[10px]"></i>
-                        {{ item.location || '未定' }}
+                    <div class="px-1">
+                        <div class="font-bold text-sm text-slate-800 leading-tight">{{ item.name }}</div>
+                        <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
+                            <i class="fa-solid fa-shop"></i>
+                            {{ item.location || 'Anywhere' }}
+                        </div>
                     </div>
                 </div>
+                
+                 <!-- Add Card -->
+                <div @click="showShoppingModal = true" class="bg-white border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center text-gray-300 hover:border-yellow-400 hover:text-yellow-500 transition cursor-pointer min-h-[180px]">
+                    <i class="fa-solid fa-plus text-3xl mb-2"></i>
+                    <span class="text-xs font-bold">Add Item</span>
+                </div>
             </div>
-            
-            <div v-if="shoppingList.length === 0" class="text-center py-10 text-gray-400">
-                <i class="fa-solid fa-basket-shopping text-4xl mb-2 opacity-30"></i>
-                <p class="text-sm">還沒有想買的東西嗎？</p>
-            </div>
-
-             <!-- 新增按鈕 -->
-             <button @click="showShoppingModal = true" class="fixed bottom-6 right-6 bg-yellow-500 text-white w-14 h-14 rounded-full shadow-2xl shadow-yellow-200 flex items-center justify-center text-2xl z-50 btn-active border-2 border-white/20">
-                <i class="fa-solid fa-plus"></i>
-            </button>
         </div>
 
 
         <!-- ===== TAB 4: 花費 ===== -->
-        <div v-if="currentTab === 'expense'" class="pb-20">
+        <div v-if="currentTab === 'expense'" class="pb-24 animate-fade-in-up">
             <!-- 總花費卡片 -->
-            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-xl mb-6 relative overflow-hidden">
-                <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-xl mb-6 relative overflow-hidden">
+                <img src="https://www.transparenttextures.com/patterns/stardust.png" class="absolute inset-0 opacity-20">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl"></div>
                 <div class="relative z-10">
-                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Total Expense</div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-lg text-gray-400">HKD</span>
-                        <span class="text-4xl font-bold font-mono">{{ totalExpenseHKD.toLocaleString() }}</span>
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Total Expenses</div>
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span class="text-xl text-gray-300 font-serif-display">HKD</span>
+                        <span class="text-5xl font-bold font-serif-display tracking-tight">{{ totalExpenseHKD.toLocaleString() }}</span>
                     </div>
-                    <div class="mt-3 pt-3 border-t border-white/10 flex justify-between items-center">
-                        <div class="text-xs text-yellow-400 font-mono">≈ IDR {{ (totalExpenseHKD * 2050).toLocaleString() }}</div>
-                        <div class="text-xs text-gray-500">{{ expenses.length }} 筆紀錄</div>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
+                        <div class="flex items-center gap-2 text-yellow-400 text-sm font-bold bg-white/10 px-3 py-1 rounded-full backdrop-blur-md">
+                            <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+                            IDR {{ (totalExpenseHKD * 2050).toLocaleString() }}
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- 花費列表 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 border-b border-gray-100 font-bold text-slate-700 bg-gray-50/50">支出紀錄明細</div>
+            <div class="bg-white rounded-3xl canva-shadow overflow-hidden">
+                <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <span class="font-bold text-slate-700">Recent Transactions</span>
+                    <span class="text-xs text-gray-400 bg-white px-2 py-1 rounded border border-gray-200">{{ expenses.length }} items</span>
+                </div>
                 <div class="divide-y divide-gray-100">
-                    <div v-for="(exp, index) in expenses" :key="index" class="p-4 flex justify-between items-center hover:bg-gray-50 transition">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-slate-500 shrink-0">
+                    <div v-for="(exp, index) in expenses" :key="index" class="p-4 flex justify-between items-center hover:bg-gray-50 transition group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 shrink-0 text-lg">
                                 <i :class="getExpenseIcon(exp.category)"></i>
                             </div>
                             <div>
                                 <div class="font-bold text-sm text-slate-800">{{ exp.name }}</div>
-                                <div class="text-xs text-gray-400 mt-0.5">{{ exp.date }} • <span class="bg-gray-100 px-1 rounded">{{ exp.payment }}</span></div>
+                                <div class="text-xs text-gray-400 mt-1 flex items-center gap-2">
+                                    <span>{{ exp.date }}</span>
+                                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                    <span class="text-teal-600">{{ exp.payment }}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="font-bold text-slate-800 font-mono">-{{ Number(exp.amount).toLocaleString() }}</div>
-                            <button @click="deleteExpense(index)" class="text-[10px] text-red-300 hover:text-red-500 mt-1">刪除</button>
+                            <div class="font-bold text-slate-800 text-base">-{{ Number(exp.amount).toLocaleString() }}</div>
+                            <button @click="deleteExpense(index)" class="text-xs text-red-300 hover:text-red-500 mt-1 opacity-0 group-hover:opacity-100 transition">Delete</button>
                         </div>
-                    </div>
-                    <div v-if="expenses.length === 0" class="p-8 text-center text-gray-400 text-sm">
-                        尚未有支出紀錄
                     </div>
                 </div>
             </div>
-
-            <!-- 新增按鈕 -->
-            <button @click="showExpenseModal = true" class="fixed bottom-6 right-6 bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl shadow-green-200 flex items-center justify-center text-2xl z-50 btn-active border-2 border-white/20">
+             <!-- 新增按鈕 -->
+            <button @click="showExpenseModal = true" class="fixed bottom-8 right-6 bg-yellow-500 text-slate-900 w-14 h-14 rounded-full shadow-xl flex items-center justify-center text-2xl z-50 btn-active ring-4 ring-white/50">
                 <i class="fa-solid fa-plus"></i>
             </button>
         </div>
 
     </div>
 
-    <!-- ===== Modals (彈出視窗) ===== -->
+    <!-- ===== Modals (設計感優化) ===== -->
 
     <!-- 新增行程 Modal -->
     <div v-if="showAddModal" class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center pointer-events-none">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm pointer-events-auto transition-opacity" @click="showAddModal = false"></div>
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm pointer-events-auto transition-opacity" @click="showAddModal = false"></div>
         <div class="bg-white w-full sm:w-96 p-6 rounded-t-3xl sm:rounded-3xl pointer-events-auto shadow-2xl transform transition-transform duration-300">
             <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
-            <h3 class="font-bold text-xl mb-5 text-slate-800">新增行程</h3>
+            <h3 class="font-bold text-xl mb-6 text-slate-800 flex items-center gap-2">
+                <span class="w-1 h-6 bg-teal-500 rounded-full"></span> 新增行程
+            </h3>
             <div class="space-y-4">
                 <div>
-                    <label class="text-xs font-bold text-gray-400 mb-1 block">名稱</label>
-                    <input v-model="newItem.name" placeholder="例如: 去吃晚餐" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-slate-800 outline-none transition">
+                    <label class="text-xs font-bold text-gray-400 mb-1 block uppercase tracking-wide">地點/名稱</label>
+                    <input v-model="newItem.name" placeholder="e.g. Dinner at..." class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition font-medium">
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-xs font-bold text-gray-400 mb-1 block">分類</label>
-                        <select v-model="newItem.category" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none">
-                            <option value="景點">景點</option>
-                            <option value="美食">美食</option>
-                            <option value="購物">購物</option>
-                            <option value="住宿">住宿</option>
-                            <option value="交通">交通</option>
+                        <label class="text-xs font-bold text-gray-400 mb-1 block uppercase tracking-wide">分類</label>
+                        <select v-model="newItem.category" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl outline-none appearance-none font-medium">
+                            <option value="景點">景點 📷</option>
+                            <option value="美食">美食 🍴</option>
+                            <option value="購物">購物 🛍️</option>
+                            <option value="住宿">住宿 🏨</option>
+                            <option value="交通">交通 🚕</option>
                         </select>
                     </div>
                     <div>
-                         <label class="text-xs font-bold text-gray-400 mb-1 block">時間 (起-迄)</label>
+                         <label class="text-xs font-bold text-gray-400 mb-1 block uppercase tracking-wide">時間</label>
                         <div class="flex gap-1">
-                            <input type="time" v-model="newItem.startTime" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl text-xs text-center outline-none">
-                            <input type="time" v-model="newItem.endTime" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl text-xs text-center outline-none">
+                            <input type="time" v-model="newItem.startTime" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl text-xs text-center outline-none">
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label class="text-xs font-bold text-gray-400 mb-1 block">備註</label>
-                    <textarea v-model="newItem.notes" placeholder="特色、筆記..." rows="2" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none resize-none"></textarea>
+                    <label class="text-xs font-bold text-gray-400 mb-1 block uppercase tracking-wide">備註</label>
+                    <textarea v-model="newItem.notes" placeholder="寫點什麼..." rows="2" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl outline-none resize-none font-medium"></textarea>
                 </div>
 
-                <button @click="addNewItinerary" class="w-full bg-slate-800 text-white py-4 rounded-xl font-bold mt-2 shadow-lg shadow-slate-300 active:scale-95 transition">確認新增</button>
+                <button @click="addNewItinerary" class="w-full bg-teal-800 text-white py-4 rounded-xl font-bold mt-2 shadow-lg hover:bg-teal-900 transition text-lg">確認新增</button>
             </div>
         </div>
     </div>
 
     <!-- 新增購物 Modal -->
     <div v-if="showShoppingModal" class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center pointer-events-none">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm pointer-events-auto" @click="showShoppingModal = false"></div>
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm pointer-events-auto" @click="showShoppingModal = false"></div>
         <div class="bg-white w-full sm:w-96 p-6 rounded-t-3xl sm:rounded-3xl pointer-events-auto shadow-2xl">
             <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
-            <h3 class="font-bold text-xl mb-5 text-slate-800">想買什麼？</h3>
+            <h3 class="font-bold text-xl mb-6 text-slate-800">Add to Wishlist</h3>
             <div class="space-y-4">
-                <input v-model="newShop.name" placeholder="商品名稱" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-yellow-400 outline-none">
-                <input v-model="newShop.location" placeholder="哪裡買 (選填)" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none">
+                <input v-model="newShop.name" placeholder="Item Name" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl focus:ring-2 focus:ring-yellow-400 outline-none">
+                <input v-model="newShop.location" placeholder="Where to buy?" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl outline-none">
                 
-                <label class="block bg-gray-50 border-2 border-dashed border-gray-300 p-4 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition">
-                    <span class="text-sm text-gray-500 font-medium"><i class="fa-solid fa-camera mr-2"></i>上傳照片</span>
+                <label class="block bg-gray-50 border-2 border-dashed border-gray-300 p-6 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition group">
+                    <div class="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center mx-auto mb-2 text-gray-400 group-hover:text-yellow-500">
+                         <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <span class="text-sm text-gray-500 font-medium">Upload Photo</span>
                     <input type="file" @change="handleImageUpload" class="hidden" accept="image/*">
                 </label>
                 
-                <div v-if="newShop.image" class="h-32 w-full bg-gray-100 rounded-xl overflow-hidden shadow-inner">
-                    <img :src="newShop.image" class="w-full h-full object-cover">
+                <div v-if="newShop.image" class="h-32 w-full bg-gray-100 rounded-xl overflow-hidden shadow-inner relative">
+                     <img :src="newShop.image" class="w-full h-full object-cover">
                 </div>
                 
-                <button @click="addShoppingItem" class="w-full bg-yellow-500 text-white py-4 rounded-xl font-bold shadow-lg shadow-yellow-200 active:scale-95 transition">加入清單</button>
+                <button @click="addShoppingItem" class="w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-bold shadow-lg mt-2 text-lg">Save Item</button>
             </div>
         </div>
     </div>
 
     <!-- 新增花費 Modal -->
     <div v-if="showExpenseModal" class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center pointer-events-none">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm pointer-events-auto" @click="showExpenseModal = false"></div>
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm pointer-events-auto" @click="showExpenseModal = false"></div>
         <div class="bg-white w-full sm:w-96 p-6 rounded-t-3xl sm:rounded-3xl pointer-events-auto shadow-2xl">
             <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
-            <h3 class="font-bold text-xl mb-5 text-slate-800">記一筆</h3>
+            <h3 class="font-bold text-xl mb-6 text-slate-800">New Expense</h3>
             <div class="space-y-4">
-                <input v-model="newExpense.name" placeholder="項目名稱 (如: 午餐)" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none">
+                <input v-model="newExpense.name" placeholder="What is it?" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl outline-none">
                 <div class="relative">
-                    <span class="absolute left-4 top-3.5 text-gray-400 font-bold">HKD</span>
-                    <input type="number" v-model="newExpense.amount" placeholder="0" class="w-full bg-gray-50 border border-gray-200 p-3 pl-14 rounded-xl font-mono font-bold text-lg outline-none focus:ring-2 focus:ring-green-500">
+                    <span class="absolute left-5 top-4 text-gray-400 font-bold text-sm">HKD</span>
+                    <input type="number" v-model="newExpense.amount" placeholder="0" class="w-full bg-gray-50 border border-gray-200 p-4 pl-16 rounded-xl font-mono font-bold text-xl outline-none focus:ring-2 focus:ring-green-500">
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3">
-                    <select v-model="newExpense.category" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none">
-                        <option value="飲食">飲食</option>
-                        <option value="交通">交通</option>
-                        <option value="購物">購物</option>
-                        <option value="住宿">住宿</option>
-                        <option value="其他">其他</option>
+                    <select v-model="newExpense.category" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl outline-none">
+                        <option value="飲食">飲食 🍔</option>
+                        <option value="交通">交通 🚕</option>
+                        <option value="購物">購物 🛍️</option>
+                        <option value="住宿">住宿 🏨</option>
+                        <option value="其他">其他 🏷️</option>
                     </select>
-                    <select v-model="newExpense.payment" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none">
-                        <option value="現金">現金</option>
-                        <option value="信用卡">信用卡</option>
+                    <select v-model="newExpense.payment" class="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl outline-none">
+                        <option value="現金">現金 💵</option>
+                        <option value="信用卡">信用卡 💳</option>
                     </select>
                 </div>
                 
-                <button @click="addExpense" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-green-200 active:scale-95 transition">儲存紀錄</button>
+                <button @click="addExpense" class="w-full bg-slate-800 text-white py-4 rounded-xl font-bold shadow-lg mt-2 text-lg">Save Record</button>
             </div>
         </div>
     </div>
@@ -484,9 +556,8 @@
                 // 匯率
                 calcIDR: '',
                 calcHKD: '',
-                rate: 0.00049, // 1 IDR = 0.00049 HKD (約略)
+                rate: 0.00049, // 1 IDR = 0.00049 HKD
 
-                // 初始行程資料
                 days: [
                     { weekday: 'Fri', date: '12', fullDate: '2025-12-12' },
                     { weekday: 'Sat', date: '13', fullDate: '2025-12-13' },
@@ -494,38 +565,35 @@
                     { weekday: 'Mon', date: '15', fullDate: '2025-12-15' }
                 ],
                 itinerary: [
-                    // Day 1 (12 Dec)
-                    { id: 1, date: '2025-12-12', name: 'HKG - CGK (CX 797)', time: '19:05 - 23:00', duration: '03h 55m', category: '交通', notes: '國泰航空 | 請提早 2 小時到機場', travelTime: '' },
-                    { id: 2, date: '2025-12-12', name: 'Immigrations & Luggage', time: '23:00 - 23:45', duration: '45m', category: '其他', notes: '過海關及領取行李', travelTime: '0 min' },
-                    { id: 3, date: '2025-12-12', name: 'Check In Pullman Jakarta', time: '23:45 - 01:00', duration: '1h 15m', category: '住宿', notes: 'PULLMAN Jakarta Thamrin Check-in', travelTime: '45 min' },
+                    // Day 1
+                    { id: 1, date: '2025-12-12', name: 'HKG - CGK (CX 797)', time: '19:05 - 23:00', category: '交通', notes: '國泰航空 | 請提早 2 小時到機場', travelTime: '' },
+                    { id: 2, date: '2025-12-12', name: 'Immigrations & Luggage', time: '23:00 - 23:45', category: '其他', notes: '過海關及領取行李', travelTime: '0 min' },
+                    { id: 3, date: '2025-12-12', name: 'Check In Pullman', time: '23:45 - 01:00', category: '住宿', notes: 'PULLMAN Jakarta Thamrin Check-in', travelTime: '45 min' },
 
-                    // Day 2 (13 Dec)
-                    { id: 4, date: '2025-12-13', name: 'Bakmi Krekot', time: '09:00 - 10:30', duration: '1h 30m', category: '美食', notes: '道地早餐體驗', travelTime: '30 min' },
-                    { id: 5, date: '2025-12-13', name: 'Sarinah', time: '10:30 - 12:45', duration: '2h 15m', category: '購物', notes: 'Hunting Batik (蠟染)', travelTime: '30 min' },
-                    { id: 6, date: '2025-12-13', name: 'Lekko (Grand Indonesia)', time: '12:45 - 14:00', duration: '1h 15m', category: '美食', notes: '午餐時間', travelTime: '15 min' },
-                    { id: 7, date: '2025-12-13', name: 'Ranch Market & Food Hall', time: '14:00 - 15:30', duration: '1h 30m', category: '購物', notes: 'Visit Supermarket (GI & PI)', travelTime: '15 min' },
-                    { id: 8, date: '2025-12-13', name: 'Hotel Rest', time: '16:00 - 19:00', duration: '3h', category: '住宿', notes: '回飯店休息 & 準備參加婚禮', travelTime: '30 min' },
-                    { id: 9, date: '2025-12-13', name: 'Wedding Party', time: '19:00 - 21:00', duration: '2h', category: '其他', notes: '參加婚禮晚宴', travelTime: '30 min' },
+                    // Day 2
+                    { id: 4, date: '2025-12-13', name: 'Bakmi Krekot', time: '09:00 - 10:30', category: '美食', notes: '道地早餐體驗', travelTime: '30 min' },
+                    { id: 5, date: '2025-12-13', name: 'Sarinah', time: '10:30 - 12:45', category: '購物', notes: 'Hunting Batik (蠟染)', travelTime: '30 min' },
+                    { id: 6, date: '2025-12-13', name: 'Lekko (Grand Indonesia)', time: '12:45 - 14:00', category: '美食', notes: '午餐時間', travelTime: '15 min' },
+                    { id: 7, date: '2025-12-13', name: 'Ranch Market & Food Hall', time: '14:00 - 15:30', category: '購物', notes: 'Visit Supermarket (GI & PI)', travelTime: '15 min' },
+                    { id: 8, date: '2025-12-13', name: 'Hotel Rest', time: '16:00 - 19:00', category: '住宿', notes: '回飯店休息 & 準備參加婚禮', travelTime: '30 min' },
+                    { id: 9, date: '2025-12-13', name: 'Wedding Party', time: '19:00 - 21:00', category: '其他', notes: '參加婚禮晚宴', travelTime: '30 min' },
 
-                    // Day 3 (14 Dec)
-                    { id: 10, date: '2025-12-14', name: 'Soto Gubeng', time: '09:00 - 10:30', duration: '1h 30m', category: '美食', notes: '早餐', travelTime: '30 min' },
-                    { id: 11, date: '2025-12-14', name: 'Market City PIK', time: '10:30 - 12:15', duration: '1h 45m', category: '購物', notes: 'Explore Supermarket', travelTime: '45 min' },
-                    { id: 12, date: '2025-12-14', name: 'Bandar Djakarta PIK', time: '12:15 - 14:00', duration: '1h 45m', category: '美食', notes: 'Lunch 海鮮餐廳', travelTime: '15 min' },
-                    { id: 13, date: '2025-12-14', name: 'Lotte Grosir Kelapa Gading', time: '14:00 - 16:00', duration: '2h', category: '購物', notes: 'Wholesaler (批發賣場)', travelTime: '60 min' },
-                    { id: 14, date: '2025-12-14', name: 'Grand Lucky', time: '16:00 - 17:45', duration: '1h 45m', category: '購物', notes: 'Supermarket 採購', travelTime: '45 min' },
-                    { id: 15, date: '2025-12-14', name: 'Pagi Sore Cipete', time: '17:45 - 19:30', duration: '1h 45m', category: '美食', notes: 'Dinner (知名巴東菜)', travelTime: '30 min' },
+                    // Day 3
+                    { id: 10, date: '2025-12-14', name: 'Soto Gubeng', time: '09:00 - 10:30', category: '美食', notes: '早餐', travelTime: '30 min' },
+                    { id: 11, date: '2025-12-14', name: 'Market City PIK', time: '10:30 - 12:15', category: '購物', notes: 'Explore Supermarket', travelTime: '45 min' },
+                    { id: 12, date: '2025-12-14', name: 'Bandar Djakarta PIK', time: '12:15 - 14:00', category: '美食', notes: 'Lunch 海鮮餐廳', travelTime: '15 min' },
+                    { id: 13, date: '2025-12-14', name: 'Lotte Grosir', time: '14:00 - 16:00', category: '購物', notes: 'Wholesaler (批發賣場)', travelTime: '60 min' },
+                    { id: 14, date: '2025-12-14', name: 'Grand Lucky', time: '16:00 - 17:45', category: '購物', notes: 'Supermarket 採購', travelTime: '45 min' },
+                    { id: 15, date: '2025-12-14', name: 'Pagi Sore Cipete', time: '17:45 - 19:30', category: '美食', notes: 'Dinner (知名巴東菜)', travelTime: '30 min' },
 
-                     // Day 4 (15 Dec)
-                     { id: 16, date: '2025-12-15', name: 'Bakmi ABUN Gang Kelinci', time: '09:00 - 10:30', duration: '1h 30m', category: '美食', notes: 'Pasar Baru 區域早餐', travelTime: '30 min' },
-                     { id: 17, date: '2025-12-15', name: 'Airport (CGK)', time: '11:30 - 21:30', duration: '-', category: '交通', notes: '前往機場 & 準備登機', travelTime: '60 min' }
+                     // Day 4
+                     { id: 16, date: '2025-12-15', name: 'Bakmi ABUN', time: '09:00 - 10:30', category: '美食', notes: 'Pasar Baru 區域早餐', travelTime: '30 min' },
+                     { id: 17, date: '2025-12-15', name: 'Airport (CGK)', time: '11:30 - 21:30', category: '交通', notes: '搭乘 CX 776 返回溫暖的家', travelTime: '60 min' }
                 ],
                 
-                // 新增項目暫存區
                 newItem: { name: '', category: '景點', startTime: '', endTime: '', notes: '' },
                 newShop: { name: '', location: '', image: null },
                 newExpense: { name: '', amount: '', category: '飲食', payment: '現金' },
-
-                // 資料容器
                 shoppingList: [],
                 expenses: []
             }
@@ -540,24 +608,21 @@
             }
         },
         created() {
-            // 讀取 localStorage
-            const savedShopping = localStorage.getItem('jakarta_shopping');
+            const savedShopping = localStorage.getItem('jakarta_shopping_v2');
             if (savedShopping) this.shoppingList = JSON.parse(savedShopping);
             
-            const savedExpenses = localStorage.getItem('jakarta_expenses');
+            const savedExpenses = localStorage.getItem('jakarta_expenses_v2');
             if (savedExpenses) this.expenses = JSON.parse(savedExpenses);
 
-            const savedItinerary = localStorage.getItem('jakarta_itinerary');
+            const savedItinerary = localStorage.getItem('jakarta_itinerary_v2');
             if (savedItinerary) this.itinerary = JSON.parse(savedItinerary);
         },
         methods: {
             saveData() {
-                localStorage.setItem('jakarta_shopping', JSON.stringify(this.shoppingList));
-                localStorage.setItem('jakarta_expenses', JSON.stringify(this.expenses));
-                localStorage.setItem('jakarta_itinerary', JSON.stringify(this.itinerary));
+                localStorage.setItem('jakarta_shopping_v2', JSON.stringify(this.shoppingList));
+                localStorage.setItem('jakarta_expenses_v2', JSON.stringify(this.expenses));
+                localStorage.setItem('jakarta_itinerary_v2', JSON.stringify(this.itinerary));
             },
-            
-            // 行程相關
             getCategoryColor(cat) {
                 const map = { '景點': 'bg-blue-500', '住宿': 'bg-indigo-500', '美食': 'bg-orange-500', '購物': 'bg-pink-500', '交通': 'bg-slate-500', '其他': 'bg-gray-400' };
                 return map[cat] || 'bg-gray-400';
@@ -567,50 +632,42 @@
                 return `fa-solid ${map[cat] || 'fa-circle'}`;
             },
             openMap(location) {
-                // 開啟 Google Maps
                 window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location + " Jakarta")}`, '_blank');
             },
             moveItem(index, direction) {
                 const list = this.filteredItinerary;
                 const item = list[index];
                 const realIndex = this.itinerary.indexOf(item);
-                
                 const targetListIndex = index + direction;
                 if (targetListIndex < 0 || targetListIndex >= list.length) return;
-                
                 const targetItem = list[targetListIndex];
                 const targetRealIndex = this.itinerary.indexOf(targetItem);
-
                 [this.itinerary[realIndex], this.itinerary[targetRealIndex]] = [this.itinerary[targetRealIndex], this.itinerary[realIndex]];
                 this.saveData();
             },
             deleteItineraryItem(id) {
-                if(confirm('確定要刪除此行程嗎？')) {
+                if(confirm('Delete this item?')) {
                     this.itinerary = this.itinerary.filter(i => i.id !== id);
                     this.saveData();
                 }
             },
             addNewItinerary() {
-                if(!this.newItem.name) return alert('請輸入名稱');
+                if(!this.newItem.name) return;
                 const targetDate = this.days[this.selectedDayIndex].fullDate;
-                const timeStr = (this.newItem.startTime && this.newItem.endTime) ? `${this.newItem.startTime} - ${this.newItem.endTime}` : '';
-
+                const timeStr = (this.newItem.startTime) ? this.newItem.startTime : '';
                 this.itinerary.push({
                     id: Date.now(),
                     date: targetDate,
                     name: this.newItem.name,
                     category: this.newItem.category,
                     time: timeStr,
-                    duration: '',
                     notes: this.newItem.notes,
-                    travelTime: '30 min'
+                    travelTime: '15 min'
                 });
                 this.saveData();
                 this.showAddModal = false;
-                this.newItem = { name: '', category: '景點', startTime: '', endTime: '', notes: '' };
+                this.newItem = { name: '', category: '景點', startTime: '', notes: '' };
             },
-
-            // 匯率
             convertCurrency(type) {
                 if (type === 'IDR') {
                     this.calcHKD = (this.calcIDR * this.rate).toFixed(2);
@@ -618,8 +675,6 @@
                     this.calcIDR = (this.calcHKD / this.rate).toFixed(0);
                 }
             },
-
-            // 購物
             handleImageUpload(e) {
                 const file = e.target.files[0];
                 if (file) {
@@ -638,13 +693,11 @@
                 this.newShop = { name: '', location: '', image: null };
             },
             deleteShoppingItem(index) {
-                if(confirm('確定刪除？')) {
+                if(confirm('Remove?')) {
                     this.shoppingList.splice(index, 1);
                     this.saveData();
                 }
             },
-
-            // 花費
             getExpenseIcon(cat) {
                 const map = { '交通': 'fa-taxi', '飲食': 'fa-utensils', '住宿': 'fa-hotel', '購物': 'fa-bag-shopping', '其他': 'fa-coins' };
                 return `fa-solid ${map[cat] || 'fa-coins'}`;
@@ -658,7 +711,7 @@
                 this.newExpense = { name: '', amount: '', category: '飲食', payment: '現金' };
             },
             deleteExpense(index) {
-                if(confirm('刪除此筆消費紀錄？')) {
+                if(confirm('Delete record?')) {
                     this.expenses.splice(index, 1);
                     this.saveData();
                 }
